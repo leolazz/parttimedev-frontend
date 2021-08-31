@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from "react";
-import "./App.css";
-import { JobAPI } from "./api/job.api";
-import { JobDto } from "./dto/job.dto";
-import "bootstrap/dist/css/bootstrap.min.css";
+import { JobAPI } from "../api/job.api";
+import { JobDto } from "../dto/job.dto";
 
-function App() {
+const JobTable: React.FC = () => {
   const [jobs, setJobs] = useState<JobDto[]>([]);
+
+  const columns = [
+    { path: "job.title", label: "Job Title" },
+    { path: "job.income", label: "Salary" },
+    { path: "job.field", label: "Field" },
+    { path: "job.company", label: "Company" },
+    { path: "job.location", label: "Location" },
+  ];
 
   useEffect(() => {
     async function fetchAll() {
@@ -43,6 +49,6 @@ function App() {
       </tbody>
     </table>
   );
-}
+};
 
-export default App;
+export default JobTable;

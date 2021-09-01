@@ -13,11 +13,11 @@ const JobTable: React.FC<props> = (props) => {
   // const jobs = props.jobs;
   const { sortColumn, onSort, jobs } = props;
   const columns = [
-    { path: "job.title", label: "Job Title" },
-    { path: "job.income", label: "Salary" },
-    { path: "job.field", label: "Field" },
-    { path: "job.company.name", label: "Company" },
-    { path: "job.location", label: "Location" },
+    { path: "title", label: "Job Title" },
+    { path: "income", label: "Salary" },
+    { path: "field", label: "Field" },
+    { path: "company.name", label: "Company" },
+    { path: "location", label: "Location" },
   ];
 
   return (

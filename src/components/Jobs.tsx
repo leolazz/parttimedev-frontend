@@ -9,8 +9,8 @@ import _ from "lodash";
 const Job: React.FC = () => {
   const [jobs, setJobs] = useState<JobDto[]>([]);
   const [sortColumn, setSortColumn] = useState<sortColumn>({
-    path: "title",
-    order: "asc",
+    path: "jobs.field",
+    order: "desc",
   });
 
   useEffect(() => {
@@ -28,7 +28,11 @@ const Job: React.FC = () => {
     setSortColumn(sortColumn);
   };
 
-  const sorted = _.sortBy(jobs, [sortColumn.path], [sortColumn.order]);
+  const sorted = _.orderBy(
+    jobs,
+    [sortColumn.path],
+    sortColumn.order === "asc" ? "asc" : "desc"
+  );
   console.log(sorted);
   return (
     <div>

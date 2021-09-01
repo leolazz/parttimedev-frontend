@@ -1,3 +1,5 @@
+import { company } from "./company.dto";
+
 export interface JobDto {
   id: number;
 
@@ -7,9 +9,7 @@ export interface JobDto {
 
   field: Fields;
 
-  company: string;
-
-  companyName: string;
+  company: company;
 
   location: string;
 }

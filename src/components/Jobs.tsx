@@ -5,6 +5,7 @@ import { sortColumn } from "../common/interfaces";
 import { JobAPI } from "../api/job.api";
 import { JobDto } from "../dto/job.dto";
 import _ from "lodash";
+import { NavBar } from "./NavBar";
 
 const Job: React.FC = () => {
   const [jobs, setJobs] = useState<JobDto[]>([]);
@@ -36,7 +37,11 @@ const Job: React.FC = () => {
   console.log(sorted);
   return (
     <div>
-      <JobTable jobs={sorted} onSort={handleSort} sortColumn={sortColumn} />
+      <NavBar />
+      <h3 className='mx-auto text-center'>Job Listings</h3>
+      <div>
+        <JobTable jobs={sorted} onSort={handleSort} sortColumn={sortColumn} />
+      </div>
     </div>
   );
 };

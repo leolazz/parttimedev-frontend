@@ -22,29 +22,39 @@ const JobTable: React.FC<props> = (props) => {
   ];
 
   return (
-    <table className='table table-dark mx-auto'>
-      <TableHeader columns={columns} sortColumn={sortColumn} onSort={onSort} />
-      <tbody>
-        {jobs.map((job) => {
-          return (
-            <tr key={job.id}>
-              <td>{job.title}</td>
-              <td>
-                <NumberFormat
+    <div>
+      <table className='table table-striped table-primary mx-auto'>
+        <TableHeader
+          columns={columns}
+          sortColumn={sortColumn}
+          onSort={onSort}
+        />
+        <tbody>
+          {jobs.map((job) => {
+            return (
+              <tr key={job.id}>
+                <td>{job.title}</td>
+                <td>
+                  {job.income}
+                  {/* <NumberFormat
                   value={job.income}
                   displayType={"text"}
                   thousandSeparator={true}
                   prefix={"$"}
-                />
-              </td>
-              <td>{job.field}</td>
-              <td>{job.company.name}</td>
-              <td>{job.location}</td>
-            </tr>
-          );
-        })}
-      </tbody>
-    </table>
+                /> */}
+                </td>
+                <td>{job.field}</td>
+                <td>{job.company}</td>
+                <td>{job.location}</td>
+                <td>
+                  <a href={job.link}>Apply</a>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
   );
 };
 

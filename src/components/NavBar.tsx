@@ -5,9 +5,7 @@ const NavBar: React.FC = () => {
     <div className='bs-component'>
       <nav className='navbar navbar-expand-lg navbar-dark bg-primary'>
         <div className='container-fluid'>
-          <a className='navbar-brand' href='#'>
-            PartTimeDev.Work
-          </a>
+          <a className='navbar-brand'>PartTimeDev.Work</a>
           <button
             className='navbar-toggler'
             type='button'
@@ -24,15 +22,12 @@ const NavBar: React.FC = () => {
             <ul className='navbar-nav me-auto'>
               <li className='nav-item'></li>
               <li className='nav-item'>
-                <a className='nav-link' href='#'>
-                  About
-                </a>
+                <a className='nav-link'>About</a>
               </li>
               <li className='nav-item dropdown'>
                 <a
                   className='nav-link dropdown-toggle'
                   data-bs-toggle='dropdown'
-                  href='#'
                   role='button'
                   aria-haspopup='true'
                   aria-expanded='false'
@@ -40,19 +35,11 @@ const NavBar: React.FC = () => {
                   Account
                 </a>
                 <div className='dropdown-menu'>
-                  <a className='dropdown-item' href='#'>
-                    Action
-                  </a>
-                  <a className='dropdown-item' href='#'>
-                    Another action
-                  </a>
-                  <a className='dropdown-item' href='#'>
-                    Something else here
-                  </a>
+                  <a className='dropdown-item'>Action</a>
+                  <a className='dropdown-item'>Another action</a>
+                  <a className='dropdown-item'>Something else here</a>
                   <div className='dropdown-divider'></div>
-                  <a className='dropdown-item' href='#'>
-                    Separated link
-                  </a>
+                  <a className='dropdown-item'>Separated link</a>
                 </div>
               </li>
             </ul>

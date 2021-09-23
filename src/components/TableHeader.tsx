@@ -26,6 +26,7 @@ const TableHeader: React.FC<props> = (props) => {
             {column.label}
           </th>
         ))}
+        <th>Link</th>
       </tr>
     </thead>
   );

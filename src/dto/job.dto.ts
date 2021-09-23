@@ -5,13 +5,17 @@ export interface JobDto {
 
   title: string;
 
-  income: number;
+  income: string;
 
-  field: Fields;
+  description: string;
 
-  company: company;
+  field: string;
+
+  company: string;
 
   location: string;
+
+  link: string;
 }
 
 export enum Fields {

@@ -1,4 +1,5 @@
 import React from "react";
+import NumberFormat from "react-number-format";
 import { sortColumn } from "../common/interfaces";
 import { JobDto } from "../dto/job.dto";
 import TableHeader from "./TableHeader";
@@ -21,22 +22,39 @@ const JobTable: React.FC<props> = (props) => {
   ];
 
   return (
-    <table className='table table-dark'>
-      <TableHeader columns={columns} sortColumn={sortColumn} onSort={onSort} />
-      <tbody>
-        {jobs.map((job) => {
-          return (
-            <tr key={job.id}>
-              <td>{job.title}</td>
-              <td>{job.income}</td>
-              <td>{job.field}</td>
-              <td>{job.company.name}</td>
-              <td>{job.location}</td>
-            </tr>
-          );
-        })}
-      </tbody>
-    </table>
+    <div>
+      <table className='table table-striped table-primary mx-auto'>
+        <TableHeader
+          columns={columns}
+          sortColumn={sortColumn}
+          onSort={onSort}
+        />
+        <tbody>
+          {jobs.map((job) => {
+            return (
+              <tr key={job.id}>
+                <td>{job.title}</td>
+                <td>
+                  {job.income}
+                  {/* <NumberFormat
+                  value={job.income}
+                  displayType={"text"}
+                  thousandSeparator={true}
+                  prefix={"$"}
+                /> */}
+                </td>
+                <td>{job.field}</td>
+                <td>{job.company}</td>
+                <td>{job.location}</td>
+                <td>
+                  <a href={job.link}>Apply</a>
+                </td>
+              </tr>
+            );
+          })}
+        </tbody>
+      </table>
+    </div>
   );
 };
 

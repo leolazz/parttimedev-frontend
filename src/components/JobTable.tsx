@@ -34,15 +34,7 @@ const JobTable: React.FC<props> = (props) => {
             return (
               <tr key={job.id}>
                 <td>{job.title}</td>
-                <td>
-                  {job.income}
-                  {/* <NumberFormat
-                  value={job.income}
-                  displayType={"text"}
-                  thousandSeparator={true}
-                  prefix={"$"}
-                /> */}
-                </td>
+                <td>{job.income}</td>
                 <td>{job.field}</td>
                 <td>{job.company}</td>
                 <td>{job.location}</td>

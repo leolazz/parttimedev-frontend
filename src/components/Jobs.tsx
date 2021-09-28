@@ -1,14 +1,17 @@
 import React, { useEffect } from "react";
 import { useState } from "react";
 import JobTable from "./JobTable";
-import { sortColumn } from "../common/interfaces";
+import { filterOption, sortColumn } from "../common/interfaces";
 import { JobAPI } from "../api/job.api";
 import { JobDto } from "../dto/job.dto";
-import _ from "lodash";
+import _, { assign } from "lodash";
 import { NavBar } from "./NavBar";
+import { TableFilters } from "./TableFilters";
 
 const Job: React.FC = () => {
   const [jobs, setJobs] = useState<JobDto[]>([]);
+  const [fields, setFields] = useState<String[]>([]);
+  const [filterOption, setFilterOption] = useState<filterOption>();
   const [sortColumn, setSortColumn] = useState<sortColumn>({
     path: "jobs.field",
     order: "desc",
@@ -17,15 +20,26 @@ const Job: React.FC = () => {
   useEffect(() => {
     async function fetchAll() {
       const resp = await JobAPI.getAll();
-
       setJobs(resp);
     }
-
     fetchAll();
   }, []);
 
+  useEffect(() => {
+    async function assignFields() {
+      let jobFields: String[] = [];
+      jobs.forEach((job) => {
+        jobFields.push(job.field);
+      });
+      let setJobFields = [...new Set(jobFields)];
+      setFields(setJobFields);
+    }
+    assignFields();
+  }, [jobs]);
+
+  const sortJobs = () => {};
+
   const handleSort = (sortColumn: sortColumn) => {
-    console.log(sortColumn);
     setSortColumn(sortColumn);
   };
 
@@ -34,11 +48,11 @@ const Job: React.FC = () => {
     [sortColumn.path],
     sortColumn.order === "asc" ? "asc" : "desc"
   );
-  console.log(sorted);
   return (
     <div>
       <NavBar />
       <h3 className='mx-auto text-center'>Job Listings</h3>
+      <TableFilters fields={fields} />
       <div>
         <JobTable jobs={sorted} onSort={handleSort} sortColumn={sortColumn} />
       </div>

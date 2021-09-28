@@ -1,5 +1,4 @@
 import React from "react";
-import NumberFormat from "react-number-format";
 import { sortColumn } from "../common/interfaces";
 import { JobDto } from "../dto/job.dto";
 import TableHeader from "./TableHeader";
@@ -11,7 +10,6 @@ interface props {
 }
 
 const JobTable: React.FC<props> = (props) => {
-  // const jobs = props.jobs;
   const { sortColumn, onSort, jobs } = props;
   const columns = [
     { path: "title", label: "Job Title" },

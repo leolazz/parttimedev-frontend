@@ -13,5 +13,9 @@ export interface JobDto {
 
   location: string;
 
+  isRemote: boolean;
+
+  searchedLocation: string;
+
   link: string;
 }

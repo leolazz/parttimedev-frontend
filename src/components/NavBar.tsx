@@ -5,7 +5,7 @@ const NavBar: React.FC = () => {
     <div className='bs-component'>
       <nav className='navbar navbar-expand-lg navbar-dark bg-primary'>
         <div className='container-fluid'>
-          <a className='navbar-brand'>PartTimeDev.Work</a>
+          <p className='navbar-brand'>PartTimeDev.Work</p>
           <button
             className='navbar-toggler'
             type='button'
@@ -22,10 +22,10 @@ const NavBar: React.FC = () => {
             <ul className='navbar-nav me-auto'>
               <li className='nav-item'></li>
               <li className='nav-item'>
-                <a className='nav-link'>About</a>
+                <p className='nav-link'>About</p>
               </li>
               <li className='nav-item dropdown'>
-                <a
+                <p
                   className='nav-link dropdown-toggle'
                   data-bs-toggle='dropdown'
                   role='button'
@@ -33,13 +33,13 @@ const NavBar: React.FC = () => {
                   aria-expanded='false'
                 >
                   Account
-                </a>
+                </p>
                 <div className='dropdown-menu'>
-                  <a className='dropdown-item'>Action</a>
-                  <a className='dropdown-item'>Another action</a>
-                  <a className='dropdown-item'>Something else here</a>
+                  <p className='dropdown-item'>Action</p>
+                  <p className='dropdown-item'>Another action</p>
+                  <p className='dropdown-item'>Something else here</p>
                   <div className='dropdown-divider'></div>
-                  <a className='dropdown-item'>Separated link</a>
+                  <p className='dropdown-item'>Separated link</p>
                 </div>
               </li>
             </ul>

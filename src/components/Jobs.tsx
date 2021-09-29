@@ -4,13 +4,14 @@ import JobTable from "./JobTable";
 import { filterOptions, sortColumn } from "../common/interfaces";
 import { JobAPI } from "../api/job.api";
 import { JobDto } from "../dto/job.dto";
-import _, { filter } from "lodash";
+import _ from "lodash";
 import { NavBar } from "./NavBar";
 import { TableFilters } from "./TableFilters";
 
 const Job: React.FC = () => {
   const [jobs, setJobs] = useState<JobDto[]>([]);
   const [fields, setFields] = useState<string[]>([]);
+  const [locations, setLocations] = useState<string[]>([]);
   const [filterOption, setFilterOption] = useState<filterOptions>({
     filterField: "na",
     filterValue: "na",
@@ -39,6 +40,19 @@ const Job: React.FC = () => {
       setFields(setJobFields);
     }
     assignFields();
+  }, [jobs]);
+
+  useEffect(() => {
+    async function assignLocations() {
+      let jobLocations: string[] = [];
+      jobs.forEach((job) => {
+        jobLocations.push(job.searchedLocation);
+      });
+      let setJobLocations = [...new Set(jobLocations)];
+      setJobLocations.push("Reset Filter");
+      setLocations(setJobLocations);
+    }
+    assignLocations();
   }, [jobs]);
 
   const handleFilter = (filterOption: filterOptions) => {
@@ -70,7 +84,11 @@ const Job: React.FC = () => {
     <div>
       <NavBar />
       <h3 className='mx-auto text-center'>Job Listings</h3>
-      <TableFilters fields={fields} onFilter={handleFilter} />
+      <TableFilters
+        fields={fields}
+        locations={locations}
+        onFilter={handleFilter}
+      />
       <div>
         <JobTable jobs={sorted} onSort={handleSort} sortColumn={sortColumn} />
       </div>

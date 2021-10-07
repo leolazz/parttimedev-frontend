@@ -11,8 +11,8 @@ export class JobAPI {
     return data;
   }
 
-  public static async getAllByField(): Promise<JobDto[]> {
-    const resp = await fetch("http://localhost:5000/jobs", {
+  public static async getAllByField(field: String): Promise<JobDto[]> {
+    const resp = await fetch(`http://localhost:5000/jobs/field/${field}`, {
       method: "GET",
     });
 

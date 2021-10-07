@@ -1,5 +1,3 @@
-import { company } from "./company.dto";
-
 export interface JobDto {
   id: number;
 
@@ -15,14 +13,9 @@ export interface JobDto {
 
   location: string;
 
-  link: string;
-}
+  isRemote: boolean;
 
-export enum Fields {
-  softwareEngineer = "Software Engineer",
-  frontendDevloper = "Frontend Developer",
-  backendDeveloper = "Backend Developer",
-  securityEngineer = "Security Engineer",
-  uxUi = "UX/UI",
-  designer = "Designer",
+  searchedLocation: string;
+
+  link: string;
 }

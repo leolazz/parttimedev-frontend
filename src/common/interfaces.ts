@@ -8,4 +8,9 @@ interface sortColumn {
   order: string;
 }
 
-export type { sortColumn, Column };
+interface filterOptions {
+  filterField: string;
+  filterValue: string;
+}
+
+export type { sortColumn, Column, filterOptions };

@@ -1,8 +1,9 @@
 import React from "react";
-import { Col, Container, Row, Table } from "react-bootstrap";
+import { Container, Row } from "react-bootstrap";
 import { sortColumn } from "../common/interfaces";
 import { JobDto } from "../dto/job.dto";
-import TableHeader from "./TableHeader";
+// import TableHeader from "./TableHeader";
+import BootstrapTable, { SortOrder } from "react-bootstrap-table-next";
 
 interface props {
   jobs: JobDto[];
@@ -11,26 +12,44 @@ interface props {
 }
 
 const JobTable: React.FC<props> = (props) => {
-  const { sortColumn, onSort, jobs } = props;
+  // const { sortColumn, onSort, jobs } = props;
+  // const columns = [
+  //   { path: "title", label: "Job Title" },
+  //   { path: "description", label: "Job Description" },
+  //   { path: "income", label: "Salary" },
+  //   { path: "field", label: "Field" },
+  //   { path: "company.name", label: "Company" },
+  //   { path: "location", label: "Location" },
+  // ];
   const columns = [
-    { path: "title", label: "Job Title" },
-    { path: "description", label: "Job Description" },
-    { path: "income", label: "Salary" },
-    { path: "field", label: "Field" },
-    { path: "company.name", label: "Company" },
-    { path: "location", label: "Location" },
+    { dataField: "title", text: "Job Title", sort: true },
+    { dataField: "description", text: "Job Description" },
+    { dataField: "income", text: "Salary", sort: true },
+    { dataField: "field", text: "Field", sort: true },
+    { dataField: "company", text: "Company", sort: true },
+    { dataField: "location", text: "Location", sort: true },
   ];
+
+  // this is necessary due to some unholy type error
+  const order: SortOrder = "asc";
+  const dataField: string = "field";
 
   return (
     <Container fluid>
       <Row>
-        <Table striped bordered hover variant='primary'>
-          <TableHeader
-            columns={columns}
-            sortColumn={sortColumn}
-            onSort={onSort}
-          />
-          <tbody>
+        <BootstrapTable
+          bootstrap4
+          keyField='id'
+          data={props.jobs}
+          columns={columns}
+          defaultSorted={[{ dataField, order }]}
+        />
+        {/* <TableHeader
+          columns={columns}
+          sortColumn={sortColumn}
+          onSort={onSort}
+        /> */}
+        {/* <tbody>
             {jobs.map((job) => {
               return (
                 <tr key={job.id}>
@@ -46,8 +65,7 @@ const JobTable: React.FC<props> = (props) => {
                 </tr>
               );
             })}
-          </tbody>
-        </Table>
+          </tbody> */}
       </Row>
     </Container>
   );

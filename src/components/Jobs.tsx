@@ -84,11 +84,11 @@ const Job: React.FC = () => {
     <div>
       <NavBar />
       <h3 className='mx-auto text-center'>Job Listings</h3>
-      <TableFilters
+      {/* <TableFilters
         fields={fields}
         locations={locations}
         onFilter={handleFilter}
-      />
+      /> */}
       <div>
         <JobTable jobs={sorted} onSort={handleSort} sortColumn={sortColumn} />
       </div>

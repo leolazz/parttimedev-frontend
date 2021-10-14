@@ -7,6 +7,7 @@ import { JobDto } from "../dto/job.dto";
 import _ from "lodash";
 import { NavBar } from "./NavBar";
 import { TableFilters } from "./TableFilters";
+import ReactPaginate from "react-paginate";
 
 const Job: React.FC = () => {
   const [jobs, setJobs] = useState<JobDto[]>([]);
@@ -83,12 +84,11 @@ const Job: React.FC = () => {
   return (
     <div>
       <NavBar />
-      <h3 className='mx-auto text-center'>Job Listings</h3>
-      {/* <TableFilters
+      <TableFilters
         fields={fields}
         locations={locations}
         onFilter={handleFilter}
-      /> */}
+      />
       <div>
         <JobTable jobs={sorted} onSort={handleSort} sortColumn={sortColumn} />
       </div>

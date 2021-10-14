@@ -4,6 +4,7 @@ import "bootswatch/dist/vapor/bootstrap.min.css";
 import "react-bootstrap-table-next/dist/react-bootstrap-table2.css";
 import "react-bootstrap-table2-paginator/dist/react-bootstrap-table2-paginator.min.css";
 import "react-bootstrap-table2-filter/dist/react-bootstrap-table2-filter.min.css";
+import "./styles/basic-grid.css";
 import Jobs from "./components/Jobs";
 import reportWebVitals from "./reportWebVitals";
 

@@ -2,7 +2,7 @@ import * as React from "react";
 
 const NavBar: React.FC = () => {
   return (
-    <div className='bs-component'>
+    <section className='basic-inline'>
       <nav className='navbar navbar-expand-lg navbar-dark bg-primary'>
         <div className='container-fluid'>
           <p className='navbar-brand'>PartTimeDev.Work</p>
@@ -16,7 +16,7 @@ const NavBar: React.FC = () => {
           </div>
         </div>
       </nav>
-    </div>
+    </section>
   );
 };
 

@@ -1,0 +1,8 @@
+.basic-grid {
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 2fr));
+  width: 85%;
+  margin: auto;
+  text-size-adjust: auto;
+}

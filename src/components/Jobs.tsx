@@ -1,25 +1,23 @@
 import React, { ChangeEvent, useEffect } from "react";
 import { useState } from "react";
 import JobTable from "./JobTable";
-import { filterOptions, sortColumn } from "../common/interfaces";
+import { filterOptions } from "../common/interfaces";
 import { JobAPI } from "../api/job.api";
 import { JobDto } from "../dto/job.dto";
-import _ from "lodash";
+// import _ from "lodash";
 import { NavBar } from "./NavBar";
 import { TableFilters } from "./TableFilters";
 import usePagination from "./usePagination";
-import { Pagination } from "@mui/material";
+import { Pagination, Typography } from "@mui/material";
 
 const Job: React.FC = () => {
   const [jobs, setJobs] = useState<JobDto[]>([]);
   const [fields, setFields] = useState<string[]>([]);
   const [locations, setLocations] = useState<string[]>([]);
-
   const [page, setPage] = useState(1);
   const PER_PAGE = 15;
 
-  const count = Math.ceil(jobs.length / PER_PAGE);
-  const _DATA = usePagination(jobs, PER_PAGE);
+  let count = Math.ceil(jobs.length / PER_PAGE);
 
   const handleChange = (event: ChangeEvent<unknown>, page: number) => {
     setPage(page);
@@ -28,11 +26,7 @@ const Job: React.FC = () => {
 
   const [filterOption, setFilterOption] = useState<filterOptions>({
     filterField: "na",
-    filterValue: "na",
-  });
-  const [sortColumn, setSortColumn] = useState<sortColumn>({
-    path: "jobs.field",
-    order: "desc",
+    filterFieldValue: "na",
   });
 
   useEffect(() => {
@@ -70,48 +64,56 @@ const Job: React.FC = () => {
   }, [jobs]);
 
   const handleFilter = (filterOption: filterOptions) => {
-    console.log(filterOption);
     setFilterOption(filterOption);
   };
-
-  const handleSort = (sortColumn: sortColumn) => {
-    setSortColumn(sortColumn);
-  };
-
-  const filtered = () => {
-    const { filterField, filterValue } = filterOption;
-    if (filterValue === "Reset Filter") return _DATA.currentData();
-    if (filterField === "field")
-      return jobs.filter((j) => j.field === filterValue);
+  const filter = () => {
+    const { filterField, filterFieldValue } = filterOption;
+    if (filterFieldValue === "Reset Filter") return jobs;
+    if (filterField === "field") {
+      count = Math.ceil(
+        jobs.filter((j) => j.field === filterFieldValue).length / PER_PAGE
+      );
+      console.log(count);
+      return jobs.filter((j) => j.field === filterFieldValue);
+    }
     // if (filterField === "location")
     //   return jobs.filter((j) => j.location === filterValue);
-
-    return _DATA.currentData();
+    return jobs;
   };
 
-  const sorted = _.orderBy(
-    filtered(),
-    [sortColumn.path],
-    sortColumn.order === "asc" ? "asc" : "desc"
-  );
+  let _DATA = usePagination(filter(), PER_PAGE);
   return (
-    <div>
+    <div
+      style={{
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
       <NavBar />
       <TableFilters
         fields={fields}
         locations={locations}
         onFilter={handleFilter}
       />
-      <Pagination
-        count={count}
-        size='large'
-        page={page}
-        variant='outlined'
-        shape='rounded'
-        onChange={handleChange}
-      />
       <div>
-        <JobTable jobs={sorted} onSort={handleSort} sortColumn={sortColumn} />
+        <JobTable jobs={_DATA.currentData()} />
+      </div>
+      <div
+        style={{
+          justifyContent: "center",
+          display: "flex",
+          alignItems: "center",
+          margin: "1%",
+        }}
+      >
+        <Pagination
+          count={count}
+          page={page}
+          variant='outlined'
+          shape='rounded'
+          onChange={handleChange}
+          siblingCount={1}
+        />
       </div>
     </div>
   );

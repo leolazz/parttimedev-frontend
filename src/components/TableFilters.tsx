@@ -34,7 +34,10 @@ const TableFilters: React.FC<props> = (props) => {
               <Dropdown.Item
                 className={field === "Reset Filter" ? "text-danger" : ""}
                 onClick={() =>
-                  props.onFilter({ filterField: "field", filterValue: field })
+                  props.onFilter({
+                    filterField: "field",
+                    filterFieldValue: field,
+                  })
                 }
                 key={field}
               >

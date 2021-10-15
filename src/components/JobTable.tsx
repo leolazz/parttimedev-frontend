@@ -1,11 +1,9 @@
+import { margin } from "@mui/system";
 import React from "react";
-import { sortColumn } from "../common/interfaces";
 import { JobDto } from "../dto/job.dto";
 
 interface props {
   jobs: JobDto[];
-  onSort: (sortColumn: sortColumn) => void;
-  sortColumn: sortColumn;
 }
 
 const JobTable: React.FC<props> = (props) => {
@@ -34,9 +32,7 @@ const JobTable: React.FC<props> = (props) => {
       {props.jobs.map((job) => {
         return (
           <div className='card border-secondary mb-3'>
-            <h5 className='card-header text-secondary'>
-              {job.company} - <em>{job.searchedLocation}</em>
-            </h5>
+            <h5 className='card-header text-secondary'>{job.company}</h5>
             <h5 className='card-footer text-secondary font-italic'>
               {job.field}
             </h5>
@@ -46,7 +42,16 @@ const JobTable: React.FC<props> = (props) => {
             </div>
             <div className='card-footer font-italic'>
               <p className='font-italic'>
-                <em>Income : </em> {job.income}
+                <em>Income&nbsp;:&nbsp;&nbsp;</em>
+                {job.income}
+              </p>
+              <p className='font-italic'>
+                <em>Remote&nbsp;:&nbsp;&nbsp;</em>
+                {job.isRemote === true ? "✓" : "✕"}
+              </p>
+              <p className='font-italic'>
+                <em>Location&nbsp;:&nbsp;&nbsp;</em>
+                {job.searchedLocation}
               </p>
             </div>
             <div className='card-footer'>

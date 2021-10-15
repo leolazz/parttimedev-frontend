@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { JobDto } from "../dto/job.dto";
 
 function usePagination(data: JobDto[], itemsPerPage: number) {

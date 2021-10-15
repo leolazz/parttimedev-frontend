@@ -10,7 +10,7 @@ interface sortColumn {
 
 interface filterOptions {
   filterField: string;
-  filterValue: string;
+  filterFieldValue: string;
 }
 
 export type { sortColumn, Column, filterOptions };

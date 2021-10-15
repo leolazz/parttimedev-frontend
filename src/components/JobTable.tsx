@@ -1,15 +1,6 @@
 import React from "react";
-import { Container, Row } from "react-bootstrap";
 import { sortColumn } from "../common/interfaces";
 import { JobDto } from "../dto/job.dto";
-// import TableHeader from "./TableHeader";
-import BootstrapTable, {
-  CellAlignment,
-  SortOrder,
-} from "react-bootstrap-table-next";
-import paginationFactory from "react-bootstrap-table2-paginator";
-import ToolkitProvider, { Search } from "react-bootstrap-table2-toolkit";
-import filterFactory, { selectFilter } from "react-bootstrap-table2-filter";
 
 interface props {
   jobs: JobDto[];
@@ -28,105 +19,15 @@ const JobTable: React.FC<props> = (props) => {
   //   { path: "location", label: "Location" },
   // ];
 
-  function returnAnchor(cell: string) {
-    return (
-      <a className={"secondary"} href={cell}>
-        <h5>Apply</h5>
-      </a>
-    );
-  }
-  let jobFields: string[] = [];
-  props.jobs.forEach((job) => {
-    jobFields.push(job.field);
-  });
-  let reducedJobFields = [...new Set(jobFields)];
-  const filterOptions: any = {};
-  reducedJobFields.forEach((jobField) => {
-    filterOptions[jobField] = jobField;
-  });
-
-  const columns = [
-    {
-      dataField: "field",
-      text: "Field",
-      headerStyle: () => {
-        return { width: "10%" };
-      },
-      filter: selectFilter({
-        options: filterOptions,
-        style: { color: "white" },
-      }),
-    },
-    {
-      dataField: "title",
-      text: "Job Title",
-      sort: true,
-      headerStyle: () => {
-        return { width: "15%" };
-      },
-    },
-    {
-      dataField: "description",
-      text: "Job Description",
-      headerStyle: () => {
-        return { width: "20%" };
-      },
-    },
-    {
-      dataField: "income",
-      text: "Salary",
-      sort: true,
-      headerStyle: () => {
-        return { width: "10%" };
-      },
-    },
-    {
-      dataField: "company",
-      text: "Company",
-      sort: true,
-      headerStyle: () => {
-        return { width: "10%" };
-      },
-    },
-    {
-      dataField: "location",
-      text: "Location",
-      sort: true,
-      headerStyle: () => {
-        return { width: "20%" };
-      },
-    },
-    {
-      dataField: "link",
-      text: "Link",
-      formatter: returnAnchor,
-      headerStyle: () => {
-        return { width: "5%" };
-      },
-    },
-  ];
-  const pagination = paginationFactory({
-    page: 1,
-    sizePerPage: 10,
-    lastPageText: ">>",
-    firstPageText: "<<",
-    nextPageText: ">",
-    prePageText: "<",
-    showTotal: true,
-    alwaysShowAllBtns: true,
-    onPageChange: function (page, sizePerPage) {
-      console.log("page", page);
-      console.log("sizePerPage", sizePerPage);
-    },
-    onSizePerPageChange: function (page, sizePerPage) {
-      console.log("page", page);
-      console.log("sizePerPage", sizePerPage);
-    },
-  });
-
-  const { SearchBar, ClearSearchButton } = Search;
-
-  const defaultSorted = [{ dataField: "field", order: "asc" }];
+  // let jobFields: string[] = [];
+  // props.jobs.forEach((job) => {
+  //   jobFields.push(job.field);
+  // });
+  // let reducedJobFields = [...new Set(jobFields)];
+  // const filterOptions: any = {};
+  // reducedJobFields.forEach((jobField) => {
+  //   filterOptions[jobField] = jobField;
+  // });
 
   return (
     <section className='basic-grid'>
@@ -158,40 +59,6 @@ const JobTable: React.FC<props> = (props) => {
       })}
     </section>
   );
-  // return (
-  //   <Container fluid>
-  //     <Row>
-  //       <ToolkitProvider
-  //         bootstrap4
-  //         keyField='id'
-  //         data={props.jobs}
-  //         columns={columns}
-  //         search
-  //       >
-  //         {(props) => (
-  //           <div className='allign-center'>
-  //             <SearchBar {...props.searchProps} />
-  //             <ClearSearchButton {...props.searchProps} />
-  //             <hr />
-  //             <BootstrapTable
-  //               defaultSorted={defaultSorted as any}
-  //               pagination={pagination}
-  //               {...props.baseProps}
-  //               hover={true}
-  //               striped={true}
-  //               classes={"table-primary active"}
-  //               filter={filterFactory()}
-  //             />
-  //           </div>
-  //         )}
-  //       </ToolkitProvider>
-  //     </Row>
-  //     <hr />
-  //     <hr />
-  //     <hr />
-  //     <hr />
-  //   </Container>
-  // );
 };
 
 export default JobTable;

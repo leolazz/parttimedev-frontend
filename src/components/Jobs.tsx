@@ -72,11 +72,6 @@ const Job: React.FC = () => {
       { type: "searchedLocation", name: filterLocation },
     ];
     let filteredJobs: JobDto[] = [];
-    /// NO FILTERS
-    if (filterField === "All Fields" && filterLocation === "All Locations") {
-      count = Math.ceil(jobs.length / PER_PAGE);
-      return jobs;
-    }
 
     /// JUST LOCATION FILTER
     if (filterField === "All Fields" && filterLocation !== "All Locations") {
@@ -91,6 +86,7 @@ const Job: React.FC = () => {
       return filteredJobs;
     }
 
+    // Combination
     if (filterField !== "All Fields" && filterLocation !== "All Locations") {
       filteredJobs = jobs.filter((job) =>
         filters.every(
@@ -100,10 +96,11 @@ const Job: React.FC = () => {
       count = Math.ceil(filteredJobs.length / PER_PAGE);
       return filteredJobs;
     }
-
     return jobs;
   };
-
+  const handleFilterReset = (filterOption: filterOptions) => {
+    setfilterOptions(filterOption);
+  };
   let _DATA = usePagination(filterField(), PER_PAGE);
   return (
     <div
@@ -117,6 +114,7 @@ const Job: React.FC = () => {
         fields={fields}
         locations={locations}
         onFilter={handleFilter}
+        onResetFilters={handleFilterReset}
         filterOption={filterOptions}
       />
       <div>

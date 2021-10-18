@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Dropdown } from "react-bootstrap";
+import { Dropdown, Button } from "react-bootstrap";
 import { filterOptions } from "../common/interfaces";
 
 interface props {
@@ -7,10 +7,13 @@ interface props {
   locations: string[];
   filterOption: filterOptions;
   onFilter: (arg: filterOptions) => void;
+  onResetFilters: (arg: filterOptions) => void;
 }
 
 const TableFilters: React.FC<props> = (props) => {
-  const { fields, locations, filterOption, onFilter } = { ...props };
+  const { fields, locations, filterOption, onFilter, onResetFilters } = {
+    ...props,
+  };
   return (
     <div
       style={{
@@ -84,6 +87,27 @@ const TableFilters: React.FC<props> = (props) => {
             ))}
           </Dropdown.Menu>
         </Dropdown>
+      </div>
+      <div
+        style={{
+          justifyContent: "center",
+          display: "flex",
+          alignItems: "center",
+          margin: "1%",
+        }}
+      >
+        <Button
+          style={{ whiteSpace: "nowrap" }}
+          variant='secondary'
+          onClick={() =>
+            onResetFilters({
+              filterField: "All Fields",
+              filterLocation: "All Locations",
+            })
+          }
+        >
+          Reset All Filters
+        </Button>
       </div>
     </div>
   );

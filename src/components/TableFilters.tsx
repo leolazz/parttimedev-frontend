@@ -5,10 +5,12 @@ import { filterOptions } from "../common/interfaces";
 interface props {
   fields: string[];
   locations: string[];
+  filterOption: filterOptions;
   onFilter: (arg: filterOptions) => void;
 }
 
 const TableFilters: React.FC<props> = (props) => {
+  const { fields, locations, filterOption, onFilter } = { ...props };
   return (
     <div
       style={{
@@ -28,13 +30,18 @@ const TableFilters: React.FC<props> = (props) => {
         }}
       >
         <Dropdown>
-          <Dropdown.Toggle variant='secondary'>Fields</Dropdown.Toggle>
+          <Dropdown.Toggle variant='secondary'>
+            {filterOption.filterFieldValue === "na" ||
+            filterOption.filterFieldValue === "Reset Filter"
+              ? "Fields"
+              : filterOption.filterFieldValue}
+          </Dropdown.Toggle>
           <Dropdown.Menu>
-            {props.fields.map((field) => (
+            {fields.map((field) => (
               <Dropdown.Item
                 className={field === "Reset Filter" ? "text-danger" : ""}
                 onClick={() =>
-                  props.onFilter({
+                  onFilter({
                     filterField: "field",
                     filterFieldValue: field,
                   })
@@ -58,11 +65,14 @@ const TableFilters: React.FC<props> = (props) => {
         <Dropdown>
           <Dropdown.Toggle variant='secondary'>Locations</Dropdown.Toggle>
           <Dropdown.Menu>
-            {props.locations.map((location) => (
+            {locations.map((location) => (
               <Dropdown.Item
                 className={location === "Reset Filter" ? "text-danger" : ""}
                 // onClick={() =>
-                //   props.onFilter({ filterlocation: "location", filterValue: location })
+                //   onFilter({
+                //     filterLocation: "location",
+                //     filterLocationValue: location,
+                //   })
                 // }
                 key={location}
               >

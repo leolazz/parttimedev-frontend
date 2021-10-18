@@ -15,6 +15,11 @@ const Job: React.FC = () => {
   const [fields, setFields] = useState<string[]>([]);
   const [locations, setLocations] = useState<string[]>([]);
   const [page, setPage] = useState(1);
+  const [filterFieldOption, setFilterFieldOption] = useState<filterOptions>({
+    filterField: "na",
+    filterFieldValue: "na",
+  });
+
   const PER_PAGE = 15;
 
   let count = Math.ceil(jobs.length / PER_PAGE);
@@ -23,11 +28,6 @@ const Job: React.FC = () => {
     setPage(page);
     _DATA.jump(page);
   };
-
-  const [filterOption, setFilterOption] = useState<filterOptions>({
-    filterField: "na",
-    filterFieldValue: "na",
-  });
 
   useEffect(() => {
     async function fetchAll() {
@@ -64,10 +64,10 @@ const Job: React.FC = () => {
   }, [jobs]);
 
   const handleFilter = (filterOption: filterOptions) => {
-    setFilterOption(filterOption);
+    setFilterFieldOption(filterOption);
   };
-  const filter = () => {
-    const { filterField, filterFieldValue } = filterOption;
+  const filterField = () => {
+    const { filterField, filterFieldValue } = filterFieldOption;
     if (filterFieldValue === "Reset Filter") return jobs;
     if (filterField === "field") {
       count = Math.ceil(
@@ -76,12 +76,10 @@ const Job: React.FC = () => {
       console.log(count);
       return jobs.filter((j) => j.field === filterFieldValue);
     }
-    // if (filterField === "location")
-    //   return jobs.filter((j) => j.location === filterValue);
     return jobs;
   };
 
-  let _DATA = usePagination(filter(), PER_PAGE);
+  let _DATA = usePagination(filterField(), PER_PAGE);
   return (
     <div
       style={{
@@ -94,6 +92,7 @@ const Job: React.FC = () => {
         fields={fields}
         locations={locations}
         onFilter={handleFilter}
+        filterOption={filterFieldOption}
       />
       <div>
         <JobTable jobs={_DATA.currentData()} />

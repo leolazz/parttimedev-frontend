@@ -4,20 +4,19 @@ import JobTable from "./JobTable";
 import { filterOptions } from "../common/interfaces";
 import { JobAPI } from "../api/job.api";
 import { JobDto } from "../dto/job.dto";
-// import _ from "lodash";
 import { NavBar } from "./NavBar";
 import { TableFilters } from "./TableFilters";
 import usePagination from "./usePagination";
-import { Pagination, Typography } from "@mui/material";
+import { Pagination } from "@mui/material";
 
 const Job: React.FC = () => {
   const [jobs, setJobs] = useState<JobDto[]>([]);
   const [fields, setFields] = useState<string[]>([]);
   const [locations, setLocations] = useState<string[]>([]);
   const [page, setPage] = useState(1);
-  const [filterFieldOption, setFilterFieldOption] = useState<filterOptions>({
-    filterField: "na",
-    filterFieldValue: "na",
+  const [filterOptions, setfilterOptions] = useState<filterOptions>({
+    filterField: "All Fields",
+    filterLocation: "All Locations",
   });
 
   const PER_PAGE = 15;
@@ -44,7 +43,7 @@ const Job: React.FC = () => {
         jobFields.push(job.field);
       });
       let setJobFields = [...new Set(jobFields)];
-      setJobFields.push("Reset Filter");
+      setJobFields.push("All Fields");
       setFields(setJobFields);
     }
     assignFields();
@@ -57,25 +56,51 @@ const Job: React.FC = () => {
         jobLocations.push(job.searchedLocation);
       });
       let setJobLocations = [...new Set(jobLocations)];
-      setJobLocations.push("Reset Filter");
+      setJobLocations.push("All Locations");
       setLocations(setJobLocations);
     }
     assignLocations();
   }, [jobs]);
 
   const handleFilter = (filterOption: filterOptions) => {
-    setFilterFieldOption(filterOption);
+    setfilterOptions(filterOption);
   };
   const filterField = () => {
-    const { filterField, filterFieldValue } = filterFieldOption;
-    if (filterFieldValue === "Reset Filter") return jobs;
-    if (filterField === "field") {
-      count = Math.ceil(
-        jobs.filter((j) => j.field === filterFieldValue).length / PER_PAGE
-      );
-      console.log(count);
-      return jobs.filter((j) => j.field === filterFieldValue);
+    const { filterField, filterLocation } = filterOptions;
+    const filters = [
+      { type: "field", name: filterField },
+      { type: "searchedLocation", name: filterLocation },
+    ];
+    let filteredJobs: JobDto[] = [];
+    /// NO FILTERS
+    if (filterField === "All Fields" && filterLocation === "All Locations") {
+      count = Math.ceil(jobs.length / PER_PAGE);
+      return jobs;
     }
+
+    /// JUST LOCATION FILTER
+    if (filterField === "All Fields" && filterLocation !== "All Locations") {
+      filteredJobs = jobs.filter((j) => j.searchedLocation === filterLocation);
+      count = Math.ceil(filteredJobs.length / PER_PAGE);
+      return filteredJobs;
+    }
+    ///  JUST FIELD FILTER
+    if (filterField !== "All Fields" && filterLocation === "All Locations") {
+      filteredJobs = jobs.filter((j) => j.field === filterField);
+      count = Math.ceil(filteredJobs.length / PER_PAGE);
+      return filteredJobs;
+    }
+
+    if (filterField !== "All Fields" && filterLocation !== "All Locations") {
+      filteredJobs = jobs.filter((job) =>
+        filters.every(
+          (filterEl) => job[filterEl.type as keyof typeof job] === filterEl.name
+        )
+      );
+      count = Math.ceil(filteredJobs.length / PER_PAGE);
+      return filteredJobs;
+    }
+
     return jobs;
   };
 
@@ -92,7 +117,7 @@ const Job: React.FC = () => {
         fields={fields}
         locations={locations}
         onFilter={handleFilter}
-        filterOption={filterFieldOption}
+        filterOption={filterOptions}
       />
       <div>
         <JobTable jobs={_DATA.currentData()} />

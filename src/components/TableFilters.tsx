@@ -31,19 +31,18 @@ const TableFilters: React.FC<props> = (props) => {
       >
         <Dropdown>
           <Dropdown.Toggle variant='secondary'>
-            {filterOption.filterFieldValue === "na" ||
-            filterOption.filterFieldValue === "Reset Filter"
+            {filterOption.filterField === "All Fields"
               ? "Fields"
-              : filterOption.filterFieldValue}
+              : filterOption.filterField}
           </Dropdown.Toggle>
           <Dropdown.Menu>
             {fields.map((field) => (
               <Dropdown.Item
-                className={field === "Reset Filter" ? "text-danger" : ""}
+                className={field === "All Fields" ? "text-danger" : ""}
                 onClick={() =>
                   onFilter({
-                    filterField: "field",
-                    filterFieldValue: field,
+                    filterField: field,
+                    filterLocation: filterOption.filterLocation,
                   })
                 }
                 key={field}
@@ -63,17 +62,21 @@ const TableFilters: React.FC<props> = (props) => {
         }}
       >
         <Dropdown>
-          <Dropdown.Toggle variant='secondary'>Locations</Dropdown.Toggle>
+          <Dropdown.Toggle variant='secondary'>
+            {filterOption.filterLocation === "All Locations"
+              ? "Locations"
+              : filterOption.filterLocation}
+          </Dropdown.Toggle>
           <Dropdown.Menu>
             {locations.map((location) => (
               <Dropdown.Item
-                className={location === "Reset Filter" ? "text-danger" : ""}
-                // onClick={() =>
-                //   onFilter({
-                //     filterLocation: "location",
-                //     filterLocationValue: location,
-                //   })
-                // }
+                className={location === "All Locations" ? "text-danger" : ""}
+                onClick={() =>
+                  onFilter({
+                    filterLocation: location,
+                    filterField: filterOption.filterField,
+                  })
+                }
                 key={location}
               >
                 {location}

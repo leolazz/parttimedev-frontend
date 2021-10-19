@@ -18,6 +18,7 @@ const Job: React.FC = () => {
     filterField: "All Fields",
     filterLocation: "All Locations",
   });
+  const [search, setSearch]: [string, (search: string) => void] = useState("");
 
   const PER_PAGE = 15;
 
@@ -71,7 +72,7 @@ const Job: React.FC = () => {
       { type: "field", name: filterField },
       { type: "searchedLocation", name: filterLocation },
     ];
-    let filteredJobs: JobDto[] = [];
+    let filteredJobs;
 
     /// JUST LOCATION FILTER
     if (filterField === "All Fields" && filterLocation !== "All Locations") {
@@ -101,7 +102,24 @@ const Job: React.FC = () => {
   const handleFilterReset = (filterOption: filterOptions) => {
     setfilterOptions(filterOption);
   };
-  let _DATA = usePagination(filterField(), PER_PAGE);
+
+  const handleSearch = (e: { target: { value: string } }) => {
+    console.log(e.target.value);
+    setSearch(e.target.value);
+  };
+  const jobData = () => {
+    let filtered: JobDto[] = [];
+    filterField().forEach((job) => {
+      if (
+        search === "" ||
+        job.title.toLowerCase().includes(search.toLowerCase())
+      )
+        filtered.push(job);
+    });
+    count = Math.ceil(filtered.length / PER_PAGE);
+    return filtered;
+  };
+  let _DATA = usePagination(jobData(), PER_PAGE);
   return (
     <div
       style={{
@@ -116,6 +134,7 @@ const Job: React.FC = () => {
         onFilter={handleFilter}
         onResetFilters={handleFilterReset}
         filterOption={filterOptions}
+        onSearch={handleSearch}
       />
       <div>
         <JobTable jobs={_DATA.currentData()} />
@@ -137,6 +156,8 @@ const Job: React.FC = () => {
           siblingCount={1}
         />
       </div>
+      <hr />
+      <hr />
     </div>
   );
 };

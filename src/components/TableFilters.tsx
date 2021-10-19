@@ -87,7 +87,7 @@ const TableFilters: React.FC<props> = (props) => {
                   }
                   key={field}
                 >
-                  {field}
+                  {field.toUpperCase()}
                 </Dropdown.Item>
               ))}
             </Dropdown.Menu>
@@ -120,7 +120,7 @@ const TableFilters: React.FC<props> = (props) => {
                   }
                   key={location}
                 >
-                  {location}
+                  {location.toUpperCase()}
                 </Dropdown.Item>
               ))}
             </Dropdown.Menu>

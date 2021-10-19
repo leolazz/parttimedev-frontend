@@ -15,7 +15,7 @@ const JobTable: React.FC<props> = (props) => {
             <div key={job.id} className='card border-secondary mb-3'>
               <h5 className='card-header text-secondary'>{job.company}</h5>
               <h5 className='card-footer text-secondary font-italic'>
-                {job.field}
+                {job.field.toUpperCase()}
               </h5>
               <div className='card-body'>
                 <h4 className='card-title'>{job.title}</h4>

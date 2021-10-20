@@ -4,12 +4,12 @@ import JobTable from "./JobTable";
 import { filterOptions } from "../common/interfaces";
 import { JobAPI } from "../api/job.api";
 import { JobDto } from "../dto/job.dto";
-import { NavBar } from "./NavBar";
 import { TableFilters } from "./TableFilters";
 import usePagination from "./usePagination";
-import { Pagination } from "@mui/material";
+import Pagination from "@material-ui/lab/Pagination";
+import { makeStyles } from "@material-ui/core/styles";
 
-const Job: React.FC = () => {
+const Jobs: React.FC = () => {
   const [jobs, setJobs] = useState<JobDto[]>([]);
   const [fields, setFields] = useState<string[]>([]);
   const [locations, setLocations] = useState<string[]>([]);
@@ -117,6 +117,22 @@ const Job: React.FC = () => {
     return filtered;
   };
   let _DATA = usePagination(jobData(), PER_PAGE);
+  const useStyles = makeStyles(() => ({
+    root: {
+      "& .MuiPaginationItem-outlinedSecondary.Mui-selected": {
+        border: "2px solid rgb(234 57 184 / 90%)",
+      },
+      "& .MuiPaginationItem-outlined ": {
+        border: "1px solid rgb(234 57 184 / 30%)",
+      },
+    },
+    ul: {
+      "& .MuiPaginationItem-root": {
+        color: "#fff",
+      },
+    },
+  }));
+  const classes = useStyles();
   return (
     <div
       style={{
@@ -124,7 +140,6 @@ const Job: React.FC = () => {
         alignItems: "center",
       }}
     >
-      <NavBar />
       <TableFilters
         fields={fields}
         locations={locations}
@@ -151,6 +166,8 @@ const Job: React.FC = () => {
           shape='rounded'
           onChange={handleChange}
           siblingCount={1}
+          color='secondary'
+          classes={{ ul: classes.ul, root: classes.root }}
         />
       </div>
       <hr />
@@ -159,4 +176,4 @@ const Job: React.FC = () => {
   );
 };
 
-export default Job;
+export default Jobs;

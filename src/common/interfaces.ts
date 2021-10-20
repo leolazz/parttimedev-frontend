@@ -8,9 +8,13 @@ interface sortColumn {
   order: string;
 }
 
+// interface filterOptions {
+//   filterField: string;
+//   filterFieldValue: string;
+// }
 interface filterOptions {
   filterField: string;
-  filterValue: string;
+  filterLocation: string;
 }
 
 export type { sortColumn, Column, filterOptions };

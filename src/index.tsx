@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "bootswatch/dist/vapor/bootstrap.min.css";
+import "./styles/basic-grid.css";
 import Jobs from "./components/Jobs";
 import reportWebVitals from "./reportWebVitals";
 

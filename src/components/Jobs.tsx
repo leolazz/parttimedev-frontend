@@ -1,25 +1,33 @@
-import React, { useEffect } from "react";
+import React, { ChangeEvent, useEffect } from "react";
 import { useState } from "react";
 import JobTable from "./JobTable";
-import { filterOptions, sortColumn } from "../common/interfaces";
+import { filterOptions } from "../common/interfaces";
 import { JobAPI } from "../api/job.api";
 import { JobDto } from "../dto/job.dto";
-import _ from "lodash";
 import { NavBar } from "./NavBar";
 import { TableFilters } from "./TableFilters";
+import usePagination from "./usePagination";
+import { Pagination } from "@mui/material";
 
 const Job: React.FC = () => {
   const [jobs, setJobs] = useState<JobDto[]>([]);
   const [fields, setFields] = useState<string[]>([]);
   const [locations, setLocations] = useState<string[]>([]);
-  const [filterOption, setFilterOption] = useState<filterOptions>({
-    filterField: "na",
-    filterValue: "na",
+  const [page, setPage] = useState(1);
+  const [filterOptions, setfilterOptions] = useState<filterOptions>({
+    filterField: "All Fields",
+    filterLocation: "All Locations",
   });
-  const [sortColumn, setSortColumn] = useState<sortColumn>({
-    path: "jobs.field",
-    order: "desc",
-  });
+  const [search, setSearch]: [string, (search: string) => void] = useState("");
+
+  const PER_PAGE = 15;
+
+  let count = Math.ceil(jobs.length / PER_PAGE);
+
+  const handleChange = (event: ChangeEvent<unknown>, page: number) => {
+    setPage(page);
+    _DATA.jump(page);
+  };
 
   useEffect(() => {
     async function fetchAll() {
@@ -36,7 +44,7 @@ const Job: React.FC = () => {
         jobFields.push(job.field);
       });
       let setJobFields = [...new Set(jobFields)];
-      setJobFields.push("Reset Filter");
+      setJobFields.push("All Fields");
       setFields(setJobFields);
     }
     assignFields();
@@ -49,49 +57,104 @@ const Job: React.FC = () => {
         jobLocations.push(job.searchedLocation);
       });
       let setJobLocations = [...new Set(jobLocations)];
-      setJobLocations.push("Reset Filter");
+      setJobLocations.push("All Locations");
       setLocations(setJobLocations);
     }
     assignLocations();
   }, [jobs]);
 
   const handleFilter = (filterOption: filterOptions) => {
-    console.log(filterOption);
-    setFilterOption(filterOption);
+    setfilterOptions(filterOption);
   };
-
-  const handleSort = (sortColumn: sortColumn) => {
-    setSortColumn(sortColumn);
-  };
-
-  const filtered = () => {
-    const { filterField, filterValue } = filterOption;
-    if (filterValue === "Reset Filter") return jobs;
-    if (filterField === "field")
-      return jobs.filter((j) => j.field === filterValue);
-    // if (filterField === "location")
-    //   return jobs.filter((j) => j.location === filterValue);
-
+  const filterField = () => {
+    const { filterField, filterLocation } = filterOptions;
+    const filters = [
+      { type: "field", name: filterField },
+      { type: "searchedLocation", name: filterLocation },
+    ];
+    let filteredJobs;
+    /// JUST LOCATION FILTER
+    if (filterField === "All Fields" && filterLocation !== "All Locations") {
+      filteredJobs = jobs.filter((j) => j.searchedLocation === filterLocation);
+      count = Math.ceil(filteredJobs.length / PER_PAGE);
+      return filteredJobs;
+    }
+    ///  JUST FIELD FILTER
+    if (filterField !== "All Fields" && filterLocation === "All Locations") {
+      filteredJobs = jobs.filter((j) => j.field === filterField);
+      count = Math.ceil(filteredJobs.length / PER_PAGE);
+      return filteredJobs;
+    }
+    // Combination
+    if (filterField !== "All Fields" && filterLocation !== "All Locations") {
+      filteredJobs = jobs.filter((job) =>
+        filters.every(
+          (filterEl) => job[filterEl.type as keyof typeof job] === filterEl.name
+        )
+      );
+      count = Math.ceil(filteredJobs.length / PER_PAGE);
+      return filteredJobs;
+    }
     return jobs;
   };
+  const handleFilterReset = (filterOption: filterOptions) => {
+    setfilterOptions(filterOption);
+  };
 
-  const sorted = _.orderBy(
-    filtered(),
-    [sortColumn.path],
-    sortColumn.order === "asc" ? "asc" : "desc"
-  );
+  const handleSearch = (e: { target: { value: string } }) => {
+    setSearch(e.target.value);
+  };
+  const jobData = () => {
+    let filtered: JobDto[] = [];
+    filterField().forEach((job) => {
+      if (
+        search === "" ||
+        job.title.toLowerCase().includes(search.toLowerCase())
+      )
+        filtered.push(job);
+    });
+    count = Math.ceil(filtered.length / PER_PAGE);
+    return filtered;
+  };
+  let _DATA = usePagination(jobData(), PER_PAGE);
   return (
-    <div>
+    <div
+      style={{
+        justifyContent: "center",
+        alignItems: "center",
+      }}
+    >
       <NavBar />
-      <h3 className='mx-auto text-center'>Job Listings</h3>
       <TableFilters
         fields={fields}
         locations={locations}
         onFilter={handleFilter}
+        onResetFilters={handleFilterReset}
+        filterOption={filterOptions}
+        onSearch={handleSearch}
       />
       <div>
-        <JobTable jobs={sorted} onSort={handleSort} sortColumn={sortColumn} />
+        <JobTable jobs={_DATA.currentData()} />
       </div>
+      <div
+        style={{
+          justifyContent: "center",
+          display: "flex",
+          alignItems: "center",
+          margin: "1%",
+        }}
+      >
+        <Pagination
+          count={count}
+          page={page}
+          variant='outlined'
+          shape='rounded'
+          onChange={handleChange}
+          siblingCount={1}
+        />
+      </div>
+      <hr />
+      <hr />
     </div>
   );
 };

@@ -1,22 +1,18 @@
 import * as React from "react";
+import { NavLink } from "react-router-dom";
 
 const NavBar: React.FC = () => {
   return (
-    <section className='basic-inline'>
-      <nav className='navbar navbar-expand-lg navbar-dark bg-primary'>
-        <div className='container-fluid'>
+    <nav className='navbar navbar-expand-lg navbar-dark bg-primary'>
+      <div className='container-fluid'>
+        <NavLink style={{ textDecoration: "none" }} to='/'>
           <p className='navbar-brand'>PartTimeDev.Work</p>
-          <div className='collapse navbar-collapse' id='navbarColor01'>
-            <ul className='navbar-nav me-auto'>
-              <li className='nav-item'></li>
-              <li className='nav-item'>
-                <p className='nav-link'>About</p>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </nav>
-    </section>
+        </NavLink>
+        <NavLink style={{ textDecoration: "none" }} to='/about'>
+          <p className='navbar-brand'>About</p>
+        </NavLink>
+      </div>
+    </nav>
   );
 };
 

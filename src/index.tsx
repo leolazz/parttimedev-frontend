@@ -2,12 +2,14 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "bootswatch/dist/vapor/bootstrap.min.css";
 import "./styles/basic-grid.css";
-import Jobs from "./components/Jobs";
 import reportWebVitals from "./reportWebVitals";
+import App from "./pages/App";
+import "bootswatch/dist/vapor/bootstrap.min.css";
+import "./styles/index.css";
 
 ReactDOM.render(
   <React.StrictMode>
-    <Jobs />
+    <App />
   </React.StrictMode>,
   document.getElementById("root")
 );

@@ -73,7 +73,6 @@ const Job: React.FC = () => {
       { type: "searchedLocation", name: filterLocation },
     ];
     let filteredJobs;
-
     /// JUST LOCATION FILTER
     if (filterField === "All Fields" && filterLocation !== "All Locations") {
       filteredJobs = jobs.filter((j) => j.searchedLocation === filterLocation);
@@ -86,7 +85,6 @@ const Job: React.FC = () => {
       count = Math.ceil(filteredJobs.length / PER_PAGE);
       return filteredJobs;
     }
-
     // Combination
     if (filterField !== "All Fields" && filterLocation !== "All Locations") {
       filteredJobs = jobs.filter((job) =>
@@ -104,7 +102,6 @@ const Job: React.FC = () => {
   };
 
   const handleSearch = (e: { target: { value: string } }) => {
-    console.log(e.target.value);
     setSearch(e.target.value);
   };
   const jobData = () => {

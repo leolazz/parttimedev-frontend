@@ -1,9 +1,9 @@
-import { JobDto } from "../dto/job.dto";
+import { JobDto } from '../dto/job.dto';
 
 export class JobAPI {
   public static async getAll(): Promise<JobDto[]> {
-    const resp = await fetch("http://localhost:5000/jobs", {
-      method: "GET",
+    const resp = await fetch('http://localhost:8080/jobs', {
+      method: 'GET',
     });
 
     const data = await resp.json();
@@ -12,8 +12,8 @@ export class JobAPI {
   }
 
   public static async getAllByField(field: String): Promise<JobDto[]> {
-    const resp = await fetch(`http://localhost:5000/jobs/field/${field}`, {
-      method: "GET",
+    const resp = await fetch(`http://localhost:8080/jobs/field/${field}`, {
+      method: 'GET',
     });
 
     const data = await resp.json();

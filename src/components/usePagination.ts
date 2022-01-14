@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { JobDto } from "../dto/job.dto";
+import { useState } from 'react';
+import { JobDto } from '../dto/job.dto';
 
 function usePagination(data: JobDto[], itemsPerPage: number) {
   const [currentPage, setCurrentPage] = useState(1);
@@ -21,7 +21,7 @@ function usePagination(data: JobDto[], itemsPerPage: number) {
 
   function jump(page: number) {
     const pageNumber = Math.max(1, page);
-    setCurrentPage((currentPage) => Math.min(pageNumber, maxPage));
+    setCurrentPage(() => Math.min(pageNumber, maxPage));
   }
   return { next, prev, jump, currentData, currentPage, maxPage };
 }

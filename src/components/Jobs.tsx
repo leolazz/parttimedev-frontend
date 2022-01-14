@@ -1,13 +1,13 @@
-import React, { ChangeEvent, useEffect } from "react";
-import { useState } from "react";
-import JobTable from "./JobTable";
-import { filterOptions } from "../common/interfaces";
-import { JobAPI } from "../api/job.api";
-import { JobDto } from "../dto/job.dto";
-import { TableFilters } from "./TableFilters";
-import usePagination from "./usePagination";
-import Pagination from "@material-ui/lab/Pagination";
-import { makeStyles } from "@material-ui/core/styles";
+import React, { ChangeEvent, useEffect } from 'react';
+import { useState } from 'react';
+import JobTable from './JobTable';
+import { filterOptions } from '../common/interfaces';
+import { JobAPI } from '../api/job.api';
+import { JobDto } from '../dto/job.dto';
+import { TableFilters } from './TableFilters';
+import usePagination from './usePagination';
+import Pagination from '@material-ui/lab/Pagination';
+import { makeStyles } from '@material-ui/core/styles';
 
 const Jobs: React.FC = () => {
   const [jobs, setJobs] = useState<JobDto[]>([]);
@@ -15,10 +15,10 @@ const Jobs: React.FC = () => {
   const [locations, setLocations] = useState<string[]>([]);
   const [page, setPage] = useState(1);
   const [filterOptions, setfilterOptions] = useState<filterOptions>({
-    filterField: "All Fields",
-    filterLocation: "All Locations",
+    filterField: 'All Fields',
+    filterLocation: 'All Locations',
   });
-  const [search, setSearch]: [string, (search: string) => void] = useState("");
+  const [search, setSearch]: [string, (search: string) => void] = useState('');
 
   const PER_PAGE = 15;
 
@@ -27,6 +27,11 @@ const Jobs: React.FC = () => {
   const handleChange = (event: ChangeEvent<unknown>, page: number) => {
     setPage(page);
     _DATA.jump(page);
+  };
+
+  const resetPage = () => {
+    setPage(1);
+    _DATA.jump(1);
   };
 
   useEffect(() => {
@@ -44,7 +49,7 @@ const Jobs: React.FC = () => {
         jobFields.push(job.field);
       });
       let setJobFields = [...new Set(jobFields)];
-      setJobFields.push("All Fields");
+      setJobFields.push('All Fields');
       setFields(setJobFields);
     }
     assignFields();
@@ -57,7 +62,7 @@ const Jobs: React.FC = () => {
         jobLocations.push(job.searchedLocation);
       });
       let setJobLocations = [...new Set(jobLocations)];
-      setJobLocations.push("All Locations");
+      setJobLocations.push('All Locations');
       setLocations(setJobLocations);
     }
     assignLocations();
@@ -69,24 +74,24 @@ const Jobs: React.FC = () => {
   const filterField = () => {
     const { filterField, filterLocation } = filterOptions;
     const filters = [
-      { type: "field", name: filterField },
-      { type: "searchedLocation", name: filterLocation },
+      { type: 'field', name: filterField },
+      { type: 'searchedLocation', name: filterLocation },
     ];
     let filteredJobs;
     /// JUST LOCATION FILTER
-    if (filterField === "All Fields" && filterLocation !== "All Locations") {
+    if (filterField === 'All Fields' && filterLocation !== 'All Locations') {
       filteredJobs = jobs.filter((j) => j.searchedLocation === filterLocation);
       count = Math.ceil(filteredJobs.length / PER_PAGE);
       return filteredJobs;
     }
     ///  JUST FIELD FILTER
-    if (filterField !== "All Fields" && filterLocation === "All Locations") {
+    if (filterField !== 'All Fields' && filterLocation === 'All Locations') {
       filteredJobs = jobs.filter((j) => j.field === filterField);
       count = Math.ceil(filteredJobs.length / PER_PAGE);
       return filteredJobs;
     }
     // Combination
-    if (filterField !== "All Fields" && filterLocation !== "All Locations") {
+    if (filterField !== 'All Fields' && filterLocation !== 'All Locations') {
       filteredJobs = jobs.filter((job) =>
         filters.every(
           (filterEl) => job[filterEl.type as keyof typeof job] === filterEl.name
@@ -108,7 +113,7 @@ const Jobs: React.FC = () => {
     let filtered: JobDto[] = [];
     filterField().forEach((job) => {
       if (
-        search === "" ||
+        search === '' ||
         job.title.toLowerCase().includes(search.toLowerCase())
       )
         filtered.push(job);
@@ -117,18 +122,28 @@ const Jobs: React.FC = () => {
     return filtered;
   };
   let _DATA = usePagination(jobData(), PER_PAGE);
+
+  console.log('current page ' + _DATA.currentPage);
+  console.log('max page ' + _DATA.maxPage);
+
+  if (page > _DATA.maxPage && _DATA.maxPage !== 0) {
+    resetPage();
+  }
+
+  console.log('AFTER Current page ' + _DATA.currentPage + '----' + page);
+
   const useStyles = makeStyles(() => ({
     root: {
-      "& .MuiPaginationItem-outlinedSecondary.Mui-selected": {
-        border: "2px solid rgb(234 57 184 / 90%)",
+      '& .MuiPaginationItem-outlinedSecondary.Mui-selected': {
+        border: '2px solid rgb(234 57 184 / 90%)',
       },
-      "& .MuiPaginationItem-outlined ": {
-        border: "1px solid rgb(234 57 184 / 30%)",
+      '& .MuiPaginationItem-outlined ': {
+        border: '1px solid rgb(234 57 184 / 30%)',
       },
     },
     ul: {
-      "& .MuiPaginationItem-root": {
-        color: "#fff",
+      '& .MuiPaginationItem-root': {
+        color: '#fff',
       },
     },
   }));
@@ -136,8 +151,8 @@ const Jobs: React.FC = () => {
   return (
     <div
       style={{
-        justifyContent: "center",
-        alignItems: "center",
+        justifyContent: 'center',
+        alignItems: 'center',
       }}
     >
       <TableFilters
@@ -153,10 +168,10 @@ const Jobs: React.FC = () => {
       </div>
       <div
         style={{
-          justifyContent: "center",
-          display: "flex",
-          alignItems: "center",
-          margin: "1%",
+          justifyContent: 'center',
+          display: 'flex',
+          alignItems: 'center',
+          margin: '1%',
         }}
       >
         <Pagination

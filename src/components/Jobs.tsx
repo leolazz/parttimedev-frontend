@@ -78,10 +78,8 @@ const Jobs: React.FC = () => {
   };
   const filterField = () => {
     const { filterField, filterLocation } = filterOptions;
-    const filters = [
-      { type: 'field', name: filterField },
-      { type: 'searchedLocation', name: filterLocation },
-    ];
+
+    console.log(filterField, filterLocation);
     let filteredJobs;
     /// JUST LOCATION FILTER
     if (filterField === 'All Fields' && filterLocation !== 'All Locations') {
@@ -99,12 +97,13 @@ const Jobs: React.FC = () => {
     }
     // Combination
     if (filterField !== 'All Fields' && filterLocation !== 'All Locations') {
-      filteredJobs = jobs.filter((job) =>
-        filters.every(
-          (filterEl) => job[filterEl.type as keyof typeof job] === filterEl.name
-        )
+      filteredJobs = jobs.filter(
+        (j) =>
+          j.field.toUpperCase() === filterField &&
+          j.searchedLocation.toUpperCase() === filterLocation
       );
       count = Math.ceil(filteredJobs.length / PER_PAGE);
+      console.log('combo' + filteredJobs.length);
       return filteredJobs;
     }
     return jobs;
@@ -121,7 +120,8 @@ const Jobs: React.FC = () => {
     filterField().forEach((job) => {
       if (
         search === '' ||
-        job.title.toLowerCase().includes(search.toLowerCase())
+        job.title.toLowerCase().includes(search.toLowerCase()) ||
+        job.company.toLowerCase().includes(search.toLowerCase())
       )
         filtered.push(job);
     });
@@ -130,14 +130,9 @@ const Jobs: React.FC = () => {
   };
   let _DATA = usePagination(jobData(), PER_PAGE);
 
-  console.log('current page ' + _DATA.currentPage);
-  console.log('max page ' + _DATA.maxPage);
-
   if (page > _DATA.maxPage && _DATA.maxPage !== 0) {
     resetPage();
   }
-
-  console.log('AFTER Current page ' + _DATA.currentPage + '----' + page);
 
   const useStyles = makeStyles(() => ({
     root: {

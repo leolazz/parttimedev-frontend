@@ -8,12 +8,15 @@ import { TableFilters } from './TableFilters';
 import usePagination from './usePagination';
 import Pagination from '@material-ui/lab/Pagination';
 import { makeStyles } from '@material-ui/core/styles';
+import ClipLoader from 'react-spinners/ClipLoader';
+import { css } from '@emotion/react';
 
 const Jobs: React.FC = () => {
   const [jobs, setJobs] = useState<JobDto[]>([]);
   const [fields, setFields] = useState<string[]>([]);
   const [locations, setLocations] = useState<string[]>([]);
   const [page, setPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
   const [filterOptions, setfilterOptions] = useState<filterOptions>({
     filterField: 'All Fields',
     filterLocation: 'All Locations',
@@ -36,8 +39,10 @@ const Jobs: React.FC = () => {
 
   useEffect(() => {
     async function fetchAll() {
+      setIsLoading(true);
       const resp = await JobAPI.getAll();
       setJobs(resp);
+      setIsLoading(false);
     }
     fetchAll();
   }, []);
@@ -46,7 +51,7 @@ const Jobs: React.FC = () => {
     async function assignFields() {
       let jobFields: string[] = [];
       jobs.forEach((job) => {
-        jobFields.push(job.field);
+        jobFields.push(job.field.toUpperCase());
       });
       let setJobFields = [...new Set(jobFields)];
       setJobFields.push('All Fields');
@@ -59,7 +64,7 @@ const Jobs: React.FC = () => {
     async function assignLocations() {
       let jobLocations: string[] = [];
       jobs.forEach((job) => {
-        jobLocations.push(job.searchedLocation);
+        jobLocations.push(job.searchedLocation.toUpperCase());
       });
       let setJobLocations = [...new Set(jobLocations)];
       setJobLocations.push('All Locations');
@@ -80,13 +85,15 @@ const Jobs: React.FC = () => {
     let filteredJobs;
     /// JUST LOCATION FILTER
     if (filterField === 'All Fields' && filterLocation !== 'All Locations') {
-      filteredJobs = jobs.filter((j) => j.searchedLocation === filterLocation);
+      filteredJobs = jobs.filter(
+        (j) => j.searchedLocation.toUpperCase() === filterLocation
+      );
       count = Math.ceil(filteredJobs.length / PER_PAGE);
       return filteredJobs;
     }
     ///  JUST FIELD FILTER
     if (filterField !== 'All Fields' && filterLocation === 'All Locations') {
-      filteredJobs = jobs.filter((j) => j.field === filterField);
+      filteredJobs = jobs.filter((j) => j.field.toUpperCase() === filterField);
       count = Math.ceil(filteredJobs.length / PER_PAGE);
       return filteredJobs;
     }
@@ -148,47 +155,62 @@ const Jobs: React.FC = () => {
     },
   }));
   const classes = useStyles();
-  return (
-    <div
-      style={{
-        justifyContent: 'center',
-        alignItems: 'center',
-      }}
-    >
-      <TableFilters
-        fields={fields}
-        locations={locations}
-        onFilter={handleFilter}
-        onResetFilters={handleFilterReset}
-        filterOption={filterOptions}
-        onSearch={handleSearch}
-      />
-      <div>
-        <JobTable jobs={_DATA.currentData()} />
+  if (isLoading) {
+    return (
+      <div style={{ marginTop: '3%' }}>
+        <ClipLoader
+          color={'fuchsia'}
+          loading={isLoading}
+          css={css`
+            display: block;
+            margin: 0 auto;
+          `}
+          size={250}
+        />
       </div>
+    );
+  } else
+    return (
       <div
         style={{
           justifyContent: 'center',
-          display: 'flex',
           alignItems: 'center',
-          margin: '1%',
         }}
       >
-        <Pagination
-          count={count}
-          page={page}
-          variant='outlined'
-          shape='rounded'
-          onChange={handleChange}
-          siblingCount={1}
-          color='secondary'
-          classes={{ ul: classes.ul, root: classes.root }}
+        <TableFilters
+          fields={fields}
+          locations={locations}
+          onFilter={handleFilter}
+          onResetFilters={handleFilterReset}
+          filterOption={filterOptions}
+          onSearch={handleSearch}
         />
+        <div>
+          <JobTable jobs={_DATA.currentData()} />
+        </div>
+        <div
+          style={{
+            justifyContent: 'center',
+            display: 'flex',
+            alignItems: 'center',
+            margin: '1%',
+          }}
+        >
+          <Pagination
+            count={count}
+            page={page}
+            variant='outlined'
+            shape='rounded'
+            onChange={handleChange}
+            siblingCount={1}
+            color='secondary'
+            classes={{ ul: classes.ul, root: classes.root }}
+          />
+        </div>
+        <hr />
+        <hr />
       </div>
-      <hr />
-      <hr />
-    </div>
-  );
+    );
 };
 
 export default Jobs;

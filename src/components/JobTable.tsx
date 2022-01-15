@@ -1,5 +1,5 @@
-import React from "react";
-import { JobDto } from "../dto/job.dto";
+import React from 'react';
+import { JobDto } from '../dto/job.dto';
 
 interface props {
   jobs: JobDto[];
@@ -7,6 +7,7 @@ interface props {
 
 const JobTable: React.FC<props> = (props) => {
   const { jobs } = { ...props };
+
   if (jobs.length > 0) {
     return (
       <section className='basic-grid'>
@@ -28,7 +29,7 @@ const JobTable: React.FC<props> = (props) => {
                 </p>
                 <p className='font-italic'>
                   <em>Remote&nbsp;:&nbsp;&nbsp;</em>
-                  {job.isRemote === true ? "✓" : "✕"}
+                  {job.isRemote === true ? '✓' : '✕'}
                 </p>
                 <p className='font-italic'>
                   <em>Location&nbsp;:&nbsp;&nbsp;</em>
@@ -49,11 +50,11 @@ const JobTable: React.FC<props> = (props) => {
     return (
       <h1
         style={{
-          justifyContent: "center",
-          display: "flex",
-          alignItems: "center",
-          marginLeft: "10%",
-          marginRight: "10%",
+          justifyContent: 'center',
+          display: 'flex',
+          alignItems: 'center',
+          marginLeft: '10%',
+          marginRight: '10%',
         }}
       >
         No Results

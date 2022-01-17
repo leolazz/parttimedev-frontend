@@ -79,7 +79,6 @@ const Jobs: React.FC = () => {
   const filterField = () => {
     const { filterField, filterLocation } = filterOptions;
 
-    console.log(filterField, filterLocation);
     let filteredJobs;
     /// JUST LOCATION FILTER
     if (filterField === 'All Fields' && filterLocation !== 'All Locations') {
@@ -103,7 +102,6 @@ const Jobs: React.FC = () => {
           j.searchedLocation.toUpperCase() === filterLocation
       );
       count = Math.ceil(filteredJobs.length / PER_PAGE);
-      console.log('combo' + filteredJobs.length);
       return filteredJobs;
     }
     return jobs;

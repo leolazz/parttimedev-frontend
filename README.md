@@ -2,10 +2,14 @@
 
 Backend Repo: https://github.com/leolazz/parttimedev-backend
 
-React Typescript front-end for Partimedev.Work
+Built with React & Typescript.
 
 PartTimeDev is a job board website made specifcally to help developers other fields find part time work opportunities
 within the technology sector.
+
+# Live Deployment: https://parttimedev.lazz.tech/
+![screenshot](/parttimedev.png)
+
 
 ## Available Scripts
 
